@@ -812,6 +812,7 @@ public abstract class AbstractProtocol<S> implements ProtocolHandler,
                 return SocketState.OPEN;
             }
 
+            // 判断processor不为空, 从异步等待队列中移出,确保异步请求不会超时
             if (processor != null) {
                 // Make sure an async timeout doesn't fire
                 getProtocol().removeWaitingProcessor(processor);
@@ -866,6 +867,7 @@ public abstract class AbstractProtocol<S> implements ProtocolHandler,
                         getLog().debug(sm.getString("abstractConnectionHandler.processorPop", processor));
                     }
                 }
+                // 创建处理器
                 if (processor == null) {
                     processor = getProtocol().createProcessor();
                     register(processor);
@@ -879,6 +881,7 @@ public abstract class AbstractProtocol<S> implements ProtocolHandler,
 
                 SocketState state = SocketState.CLOSED;
                 do {
+                    // 处理返回socket状态
                     state = processor.process(wrapper, status);
 
                     if (state == SocketState.UPGRADING) {
