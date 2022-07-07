@@ -1177,6 +1177,7 @@ public abstract class AbstractEndpoint<S,U> {
             } else {
                 sc.reset(socketWrapper, event);
             }
+            // 判断是否存在线程池, 没有直接run(); 前面看到, 这里是默认最大200个work工作线程的
             Executor executor = getExecutor();
             if (dispatch && executor != null) {
                 executor.execute(sc);
@@ -1312,6 +1313,7 @@ public abstract class AbstractEndpoint<S,U> {
 
 
     protected void startAcceptorThread() {
+        // 创建并启动接收器
         acceptor = new Acceptor<>(this);
         String threadName = getName() + "-Acceptor";
         acceptor.setThreadName(threadName);
