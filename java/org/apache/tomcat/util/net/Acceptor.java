@@ -114,6 +114,7 @@ public class Acceptor<U> implements Runnable {
 
                 try {
                     //if we have reached max connections, wait
+                    // 如果达到了最大链接数 8*1024=8192, 进入AQS阻塞队列进行等待
                     endpoint.countUpOrAwaitConnection();
 
                     // Endpoint might have been paused while waiting for latch
@@ -126,6 +127,7 @@ public class Acceptor<U> implements Runnable {
                     try {
                         // Accept the next incoming connection from the server
                         // socket
+                        // 获取客户端连接
                         socket = endpoint.serverSocketAccept();
                     } catch (Exception ioe) {
                         // We didn't get a socket
@@ -146,6 +148,7 @@ public class Acceptor<U> implements Runnable {
                     if (!stopCalled && !endpoint.isPaused()) {
                         // setSocketOptions() will hand the socket off to
                         // an appropriate processor if successful
+                        // 处理客户端连接, 如果为false处理失败, 关闭连接
                         if (!endpoint.setSocketOptions(socket)) {
                             endpoint.closeSocket(socket);
                         }
