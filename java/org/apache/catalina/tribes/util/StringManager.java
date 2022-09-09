@@ -16,6 +16,7 @@
  */
 package org.apache.catalina.tribes.util;
 
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -141,7 +142,7 @@ public class StringManager {
             str = null;
         }
 
-        return str;
+        return str != null ? new String(str.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8) : null;
     }
 
 
@@ -162,7 +163,8 @@ public class StringManager {
 
         MessageFormat mf = new MessageFormat(value);
         mf.setLocale(locale);
-        return mf.format(args, new StringBuffer(), null).toString();
+        String str = mf.format(args, new StringBuffer(), null).toString();
+        return new String(str.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
     }
 
 
