@@ -170,7 +170,8 @@ public class StringManager {
 
         MessageFormat mf = new MessageFormat(value);
         mf.setLocale(locale);
-        return mf.format(args, new StringBuffer(), null).toString();
+        String str = mf.format(args, new StringBuffer(), null).toString();
+        return new String(str.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
     }
 
 
