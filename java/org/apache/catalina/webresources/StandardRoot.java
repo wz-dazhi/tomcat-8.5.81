@@ -717,6 +717,7 @@ public class StandardRoot extends LifecycleMBeanBase implements WebResourceRoot 
 
         // This has to be called after the other resources have been started
         // else it won't find all the matching resources
+        // 处理war包里的lib目录
         processWebInfLib();
         // Need to start the newly found resources
         for (WebResourceSet classResource : classResources) {
