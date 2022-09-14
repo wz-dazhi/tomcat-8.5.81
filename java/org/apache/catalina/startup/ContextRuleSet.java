@@ -100,6 +100,7 @@ public class ContextRuleSet extends RuleSetBase {
     @Override
     public void addRuleInstances(Digester digester) {
 
+        // 创建StandardContext对象
         if (create) {
             digester.addObjectCreate(prefix + "Context",
                     "org.apache.catalina.core.StandardContext", "className");
@@ -108,6 +109,7 @@ public class ContextRuleSet extends RuleSetBase {
             digester.addRule(prefix + "Context", new SetContextPropertiesRule());
         }
 
+        // 创建ContextConfig作为StandardContext的监听器
         if (create) {
             digester.addRule(prefix + "Context",
                              new LifecycleListenerRule
