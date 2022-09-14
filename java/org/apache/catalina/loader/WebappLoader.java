@@ -289,6 +289,7 @@ public class WebappLoader extends LifecycleMBeanBase
      */
     @Override
     public void backgroundProcess() {
+        // modified()检测文件时间戳是否发生了变化, 热部署
         if (reloadable && modified()) {
             try {
                 Thread.currentThread().setContextClassLoader
