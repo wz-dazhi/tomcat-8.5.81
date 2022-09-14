@@ -287,6 +287,7 @@ public class ContextConfig implements LifecycleListener {
     public void lifecycleEvent(LifecycleEvent event) {
 
         // Identify the context we are associated with
+        // 从事件中获取context对象
         try {
             context = (Context) event.getLifecycle();
         } catch (ClassCastException e) {
@@ -296,8 +297,10 @@ public class ContextConfig implements LifecycleListener {
 
         // Process the event that has occurred
         if (event.getType().equals(Lifecycle.CONFIGURE_START_EVENT)) {
+            // 配置事件启动
             configureStart();
         } else if (event.getType().equals(Lifecycle.BEFORE_START_EVENT)) {
+            // 启动前触发
             beforeStart();
         } else if (event.getType().equals(Lifecycle.AFTER_START_EVENT)) {
             // Restore docBase for management tools
@@ -776,6 +779,7 @@ public class ContextConfig implements LifecycleListener {
                     Boolean.valueOf(context.getXmlNamespaceAware())));
         }
 
+        // 创建WebXml对象, 用于处理web.xml
         webConfig();
         context.addServletContainerInitializer(new JasperInitializer(), null);
 
@@ -1064,7 +1068,9 @@ public class ContextConfig implements LifecycleListener {
         WebXml webXml = createWebXml();
 
         // Parse context level web.xml
+        // contextWebXml为web.xml的输入流
         InputSource contextWebXml = getContextWebXmlSource();
+        // 解析web.xml
         if (!webXmlParser.parseWebXml(contextWebXml, webXml, false)) {
             ok = false;
         }
