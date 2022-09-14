@@ -2293,6 +2293,7 @@ public class StandardContext extends ContainerBase
      */
     @Override
     public ServletContext getServletContext() {
+        // 创建ServletContext对象
         if (context == null) {
             context = new ApplicationContext(this);
             if (altDDName != null) {
@@ -4999,6 +5000,7 @@ public class StandardContext extends ContainerBase
         }
 
         // Post work directory
+        // 设置工作目录
         postWorkDirectory();
 
         // Add missing components as necessary
@@ -5014,10 +5016,12 @@ public class StandardContext extends ContainerBase
                 ok = false;
             }
         }
+        // 启动资源
         if (ok) {
             resourcesStart();
         }
 
+        // 设置Web加载器
         if (getLoader() == null) {
             WebappLoader webappLoader = new WebappLoader();
             webappLoader.setDelegate(getDelegate());
@@ -5127,6 +5131,7 @@ public class StandardContext extends ContainerBase
                 }
 
                 // Notify our interested LifecycleListeners
+                // 这里会触发ContextConfig监听器
                 fireLifecycleEvent(Lifecycle.CONFIGURE_START_EVENT, null);
 
                 // Start our child containers, if not already started
@@ -5179,6 +5184,7 @@ public class StandardContext extends ContainerBase
                 }
             }
 
+            // 检测是否配置完成, 由ContextConfig监听器完成
             if (!getConfigured()) {
                 log.error(sm.getString("standardContext.configurationFail"));
                 ok = false;
@@ -5228,6 +5234,7 @@ public class StandardContext extends ContainerBase
             }
 
             // Configure and call application event listeners
+            // 调用web应用事件监听器
             if (ok) {
                 if (!listenerStart()) {
                     log.error(sm.getString("standardContext.listenerFail"));
@@ -5254,6 +5261,7 @@ public class StandardContext extends ContainerBase
             }
 
             // Configure and call application filters
+            // 配置filter过滤器, 并调用filter init方法
             if (ok) {
                 if (!filterStart()) {
                     log.error(sm.getString("standardContext.filterFail"));
@@ -5262,6 +5270,7 @@ public class StandardContext extends ContainerBase
             }
 
             // Load and initialize all "load on startup" servlets
+            // 加载servlet, 调用init方法 => servlet对应StandardWrapper
             if (ok) {
                 if (!loadOnStartup(findChildren())){
                     log.error(sm.getString("standardContext.servletFail"));
@@ -5270,6 +5279,7 @@ public class StandardContext extends ContainerBase
             }
 
             // Start ContainerBackgroundProcessor thread
+            // 启动后台线程, 检测web目录发生变化. 动态部署
             super.threadStart();
         } finally {
             // Unbinding thread
@@ -5597,6 +5607,7 @@ public class StandardContext extends ContainerBase
             return;
         }
 
+        // 执行context.reload()
         Loader loader = getLoader();
         if (loader != null) {
             try {
